@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureTrade Capital – Trusted Investment Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #1a202c;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+    }
+
+    /* Trust Section */
+    .trust-section {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .trust-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 16px 0 12px;
+      color: #0f172a;
+    }
+
+    .trust-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #475569;
+      margin-bottom: 20px;
+    }
+
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .badge {
+      background: #f1f5f9;
+      color: #1e40af;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Auth Card */
+    .auth-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .auth-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.2s;
+      background: #f8fafc;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #64748b;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    .robot-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .robot-box {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #cbd5e1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .robot-box.checked {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: white;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .switch-link {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .switch-link a {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .switch-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-msg {
+      background: #fef2f2;
+      color: #b91c1c;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-msg {
+      background: #f0fdf4;
+      color: #166534;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .trust-section, .auth-card {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- TRUST SECTION -->
+    <div class="trust-section">
+      <div class="logo">
+        <span>🔒</span>
+        SecureTrade Capital
+      </div>
+      <h1 class="trust-title">Your Trusted Investment Partner</h1>
+      <p class="trust-text">
+        We are a fully regulated and highly secure investment platform dedicated to helping everyday people grow their wealth safely. 
+        Your funds are protected with bank-level encryption, real-time monitoring, and strict risk management. 
+        Thousands of investors already trust us with their capital because we put security, transparency, and reliability first.
+      </p>
+      <div class="trust-badges">
+        <div class="badge">🛡️ Bank-Level Security</div>
+        <div class="badge">✅ Fully Regulated</div>
+        <div class="badge">📈 Proven Track Record</div>
+        <div class="badge">💬 24/7 Support</div>
+      </div>
+    </div>
+
+    <!-- AUTH CARD -->
+    <div class="auth-card">
+      <div id="errorMsg" class="error-msg"></div>
+      <div id="successMsg" class="success-msg"></div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginView">
+        <h2 class="auth-title">Log On to Your Account</h2>
+        <p class="auth-subtitle">Welcome back. Please enter your details.</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="loginPassword" placeholder="Enter your password" required />
+              <span class="toggle-password" onclick="togglePassword('loginPassword', this)">👁️</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="loginBtn">Log On</button>
+        </form>
+
+        <div class="switch-link">
+          Doesn’t have an account? <a onclick="showSignup()">Sign up</a>
+        </div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signupView" class="hidden">
+        <h2 class="auth-title">Create Your Account</h2>
+        <p class="auth-subtitle">Join thousands of smart investors today.</p>
+
+        <form id="signupForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="signupFullName" placeholder="John Doe" required />
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="signupPhone" placeholder="+1 234 567 8900" required />
+          </div>
+
+          <div class="form-group">
+            <label>Country</label>
+            <select id="signupCountry" required>
+              <option value="">Select your country</option>
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Ghana">Ghana</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Kenya">Kenya</option>
+              <option value="India">India</option>
+              <option value="Australia">Australia</option>
+              <option value="Germany">Germany</option>
+              <option value="France">France</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Referral Code (Optional)</label>
+            <input type="text" id="signupReferral" placeholder="Enter referral code if any" />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="signupPassword" placeholder="Create a strong password" required minlength="6" />
+              <span class="toggle-password" onclick="togglePassword('signupPassword', this)">👁️</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Reconfirm Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required />
+              <span class="toggle-password" onclick="togglePassword('signupConfirmPassword', this)">👁️</span>
+            </div>
+          </div>
+
+          <div class="robot-check" onclick="toggleRobot()">
+            <div class="robot-box" id="robotBox"></div>
+            <span>I’m not a robot</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="signupBtn">Create Account</button>
+        </form>
+
+        <div class="switch-link">
+          Already have an account? <a onclick="showLogin()">Log On</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===================== SUPABASE CONFIG =====================
+    const SUPABASE_URL = 'https://jvvlfisxnliloknnjwmg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_K66Z5MCL_GZvxdBGcwsXvQ_tTcxKxzm';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ===================== UI HELPERS =====================
+    let isRobotChecked = false;
+
+    function showLogin() {
+      document.getElementById('loginView').classList.remove('hidden');
+      document.getElementById('signupView').classList.add('hidden');
+      clearMessages();
+    }
+
+    function showSignup() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('signupView').classList.remove('hidden');
+      clearMessages();
+    }
+
+    function togglePassword(inputId, icon) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        icon.textContent = '👁️';
+      }
+    }
+
+    function toggleRobot() {
+      isRobotChecked = !isRobotChecked;
+      const box = document.getElementById('robotBox');
+      if (isRobotChecked) {
+        box.classList.add('checked');
+        box.textContent = '✅';
+      } else {
+        box.classList.remove('checked');
+        box.textContent = '';
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById('successMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+    }
+
+    function clearMessages() {
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    function setLoading(btnId, isLoading, text) {
+      const btn = document.getElementById(btnId);
+      if (isLoading) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span>${text}`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = text;
+      }
+    }
+
+    // ===================== LOGIN =====================
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessages();
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      setLoading('loginBtn', true, 'Logging in...');
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        // Successful login → redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        showError(err.message || 'Login failed. Please check your email and password.');
+        setLoading('loginBtn', false, 'Log On');
+      }
+    });
+
+    // ===================== SIGNUP =====================
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessages();
+
+      const fullName = document.getElementById('signupFullName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const country = document.getElementById('signupCountry').value;
+      const referralCode = document.getElementById('signupReferral').value.trim().toUpperCase();
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+      if (password !== confirmPassword) {
+        showError('Passwords do not match.');
+        return;
+      }
+
+      if (!isRobotChecked) {
+        showError('Please confirm you are not a robot.');
+        return;
+      }
+
+      setLoading('signupBtn', true, 'Creating account...');
+
+      try {
+        // 1. Create auth user
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: fullName
+            }
+          }
+        });
+
+        if (authError) throw authError;
+
+        const userId = authData.user.id;
+
+        // 2. Update profile with extra fields
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            full_name: fullName,
+            phone: phone,
+            country: country
+          })
+          .eq('id', userId);
+
+        if (profileError) throw profileError;
+
+        // 3. Handle referral if provided
+        if (referralCode) {
+          const { data: referrer } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('referral_code', referralCode)
+            .single();
+
+          if (referrer) {
+            await supabase
+              .from('profiles')
+              .update({ referred_by: referrer.id })
+              .eq('id', userId);
+
+            await supabase
+              .from('referrals')
+              .insert({
+                referrer_id: referrer.id,
+                referred_id: userId
+              });
+          }
+        }
+
+        // 4. Give $50 signup bonus
+        await supabase
+          .from('profiles')
+          .update({
+            total_balance: 50.00,
+            signup_bonus_claimed: true
+          })
+          .eq('id', userId);
+
+        await supabase
+          .from('transactions')
+          .insert({
+            user_id: userId,
+            type: 'signup_bonus',
+            amount: 50.00,
+            description: 'Welcome bonus for creating an account'
+          });
+
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: userId,
+            title: 'Welcome Bonus Received! 🎉',
+            message: 'You have received a $50 signup reward. Check your Rewards section.',
+            type: 'success'
+          });
+
+        showSuccess('Account created successfully! Redirecting to login...');
+        
+        setTimeout(() => {
+          showLogin();
+          document.getElementById('loginEmail').value = email;
+          setLoading('signupBtn', false, 'Create Account');
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        showError(err.message || 'Something went wrong. Please try again.');
+        setLoading('signupBtn', false, 'Create Account');
+      }
+    });
+
+    // Check if already logged in
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = 'dashboard.html';
+      }
+    })();
+  </script>
+</body>
+</html>
