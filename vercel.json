@@ -1,0 +1,17 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/buy", "destination": "/buy.html" },
+    { "source": "/withdraw", "destination": "/withdraw.html" },
+    { "source": "/rewards", "destination": "/rewards.html" },
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/notifications", "destination": "/notifications.html" },
+    { "source": "/chat", "destination": "/chat.html" },
+    { "source": "/markets", "destination": "/markets.html" },
+    { "source": "/portfolio", "destination": "/portfolio.html" },
+    { "source": "/discover", "destination": "/discover.html" },
+    { "source": "/more", "destination": "/more.html" }
+  ]
+}
