@@ -28,7 +28,6 @@
       width: 100%;
     }
 
-    /* Trust Section */
     .trust-section {
       background: white;
       border-radius: 20px;
@@ -89,12 +88,8 @@
       font-weight: 600;
       padding: 6px 12px;
       border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
-    /* Auth Card */
     .auth-card {
       background: white;
       border-radius: 20px;
@@ -134,8 +129,8 @@
       border: 1.5px solid #e2e8f0;
       border-radius: 12px;
       font-size: 15px;
-      transition: all 0.2s;
       background: #f8fafc;
+      transition: all 0.2s;
     }
 
     input:focus, select:focus {
@@ -210,7 +205,7 @@
     }
 
     .btn-primary:disabled {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: not-allowed;
       transform: none;
     }
@@ -229,35 +224,28 @@
       cursor: pointer;
     }
 
-    .switch-link a:hover {
-      text-decoration: underline;
+    .error-msg, .success-msg {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
     }
 
     .error-msg {
       background: #fef2f2;
       color: #b91c1c;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      margin-bottom: 16px;
-      display: none;
     }
 
     .success-msg {
       background: #f0fdf4;
       color: #166534;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      margin-bottom: 16px;
-      display: none;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Loading spinner */
     .spinner {
       display: inline-block;
       width: 18px;
@@ -309,7 +297,7 @@
       <div id="errorMsg" class="error-msg"></div>
       <div id="successMsg" class="success-msg"></div>
 
-      <!-- LOGIN FORM -->
+      <!-- LOGIN -->
       <div id="loginView">
         <h2 class="auth-title">Log On to Your Account</h2>
         <p class="auth-subtitle">Welcome back. Please enter your details.</p>
@@ -317,13 +305,13 @@
         <form id="loginForm">
           <div class="form-group">
             <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+            <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email" />
           </div>
 
           <div class="form-group">
             <label>Password</label>
             <div class="password-wrapper">
-              <input type="password" id="loginPassword" placeholder="Enter your password" required />
+              <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password" />
               <span class="toggle-password" onclick="togglePassword('loginPassword', this)">👁️</span>
             </div>
           </div>
@@ -336,7 +324,7 @@
         </div>
       </div>
 
-      <!-- SIGNUP FORM -->
+      <!-- SIGNUP -->
       <div id="signupView" class="hidden">
         <h2 class="auth-title">Create Your Account</h2>
         <p class="auth-subtitle">Join thousands of smart investors today.</p>
@@ -495,19 +483,26 @@
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
 
+      if (!email || !password) {
+        showError('Please fill in all fields.');
+        return;
+      }
+
       setLoading('loginBtn', true, 'Logging in...');
 
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password
+          email: email,
+          password: password
         });
 
         if (error) throw error;
 
-        // Successful login → redirect to dashboard
+        // Success → go to dashboard
         window.location.href = 'dashboard.html';
+
       } catch (err) {
+        console.error(err);
         showError(err.message || 'Login failed. Please check your email and password.');
         setLoading('loginBtn', false, 'Log On');
       }
@@ -539,10 +534,10 @@
       setLoading('signupBtn', true, 'Creating account...');
 
       try {
-        // 1. Create auth user
+        // 1. Create the user in Auth
         const { data: authData, error: authError } = await supabase.auth.signUp({
-          email,
-          password,
+          email: email,
+          password: password,
           options: {
             data: {
               full_name: fullName
@@ -551,10 +546,14 @@
         });
 
         if (authError) throw authError;
+        if (!authData.user) throw new Error('Account creation failed. Please try again.');
 
         const userId = authData.user.id;
 
-        // 2. Update profile with extra fields
+        // 2. Wait a short moment for the database trigger to create the profile
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        // 3. Update the profile with extra information
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
@@ -564,15 +563,18 @@
           })
           .eq('id', userId);
 
-        if (profileError) throw profileError;
+        // We don't throw if profile update fails (trigger may still be running)
+        if (profileError) {
+          console.warn('Profile update warning:', profileError.message);
+        }
 
-        // 3. Handle referral if provided
+        // 4. Handle referral code if provided
         if (referralCode) {
           const { data: referrer } = await supabase
             .from('profiles')
             .select('id')
             .eq('referral_code', referralCode)
-            .single();
+            .maybeSingle();
 
           if (referrer) {
             await supabase
@@ -589,7 +591,7 @@
           }
         }
 
-        // 4. Give $50 signup bonus
+        // 5. Give $50 signup bonus
         await supabase
           .from('profiles')
           .update({
@@ -598,6 +600,7 @@
           })
           .eq('id', userId);
 
+        // 6. Record the transaction
         await supabase
           .from('transactions')
           .insert({
@@ -607,6 +610,7 @@
             description: 'Welcome bonus for creating an account'
           });
 
+        // 7. Create welcome notification
         await supabase
           .from('notifications')
           .insert({
@@ -616,8 +620,9 @@
             type: 'success'
           });
 
-        showSuccess('Account created successfully! Redirecting to login...');
-        
+        showSuccess('Account created successfully! You can now log in.');
+
+        // Switch back to login after 2 seconds
         setTimeout(() => {
           showLogin();
           document.getElementById('loginEmail').value = email;
@@ -631,11 +636,15 @@
       }
     });
 
-    // Check if already logged in
-    (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        window.location.href = 'dashboard.html';
+    // ===================== CHECK IF ALREADY LOGGED IN =====================
+    (async function checkSession() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          window.location.href = 'dashboard.html';
+        }
+      } catch (err) {
+        console.log('Session check skipped');
       }
     })();
   </script>
