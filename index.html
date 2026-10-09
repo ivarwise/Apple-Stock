@@ -3,241 +3,286 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SecureTrade Capital – Trusted Investment Platform</title>
+  <title>SecureTrade Capital – Invest Smarter</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-      min-height: 100vh;
+      background: #fff;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      background: #8B0000;
+      color: white;
+      padding: 10px 0;
+      font-size: 13px;
+    }
+
+    .top-bar .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      opacity: 0.9;
+    }
+
+    .top-links a:hover {
+      opacity: 1;
+    }
+
+    /* ===== MAIN HEADER ===== */
+    .main-header {
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 12px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .main-header .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: #1a202c;
-    }
-
-    .container {
-      max-width: 480px;
-      width: 100%;
-    }
-
-    .trust-section {
-      background: white;
-      border-radius: 20px;
-      padding: 32px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      text-align: center;
+      justify-content: space-between;
     }
 
     .logo {
-      font-size: 28px;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 10px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #8B0000;
     }
 
-    .logo span {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: #8B0000;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
       font-size: 20px;
     }
 
-    .trust-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin: 16px 0 12px;
-      color: #0f172a;
-    }
-
-    .trust-text {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #475569;
-      margin-bottom: 20px;
-    }
-
-    .trust-badges {
+    .nav {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
+      gap: 28px;
     }
 
-    .badge {
-      background: #f1f5f9;
-      color: #1e40af;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 20px;
-    }
-
-    .auth-card {
-      background: white;
-      border-radius: 20px;
-      padding: 32px 28px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    }
-
-    .auth-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-
-    .auth-subtitle {
-      text-align: center;
-      color: #64748b;
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: #334155;
-      margin-bottom: 6px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px 16px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
+    .nav a {
+      text-decoration: none;
+      color: #333;
       font-size: 15px;
-      background: #f8fafc;
-      transition: all 0.2s;
+      font-weight: 500;
     }
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: #2563eb;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    .nav a:hover {
+      color: #8B0000;
     }
 
-    .password-wrapper {
-      position: relative;
-    }
-
-    .toggle-password {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #64748b;
-      font-size: 18px;
-      user-select: none;
-    }
-
-    .robot-check {
+    .header-right {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 18px 0;
-      cursor: pointer;
-      user-select: none;
+      gap: 16px;
     }
 
-    .robot-box {
-      width: 22px;
-      height: 22px;
-      border: 2px solid #cbd5e1;
+    .btn-outline {
+      padding: 8px 18px;
+      border: 1.5px solid #8B0000;
       border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-
-    .robot-box.checked {
-      background: #16a34a;
-      border-color: #16a34a;
-      color: white;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
+      color: #8B0000;
+      background: transparent;
       font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s;
+      text-decoration: none;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      padding: 10px 22px;
+      background: #8B0000;
       color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #f8f5f0 0%, #f0e9e0 100%);
+      padding: 60px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #1a1a1a;
+      margin-bottom: 18px;
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #8B0000;
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    /* Login Card */
+    .login-card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px 26px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+      max-width: 380px;
+      width: 100%;
+    }
+
+    .login-card h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .login-card .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #8B0000;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 16px;
+      color: #888;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #8B0000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
       margin-top: 8px;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.65;
+    .btn-login:disabled {
+      opacity: 0.7;
       cursor: not-allowed;
-      transform: none;
     }
 
-    .switch-link {
+    .links {
+      margin-top: 16px;
+      font-size: 13px;
       text-align: center;
-      margin-top: 22px;
-      font-size: 14px;
-      color: #64748b;
     }
 
-    .switch-link a {
-      color: #2563eb;
-      font-weight: 600;
+    .links a {
+      color: #8B0000;
       text-decoration: none;
+      font-weight: 500;
       cursor: pointer;
     }
 
-    .error-msg, .success-msg {
-      padding: 12px 14px;
-      border-radius: 10px;
+    .error, .success {
+      padding: 11px 14px;
+      border-radius: 8px;
       font-size: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: none;
     }
 
-    .error-msg {
+    .error {
       background: #fef2f2;
       color: #b91c1c;
     }
 
-    .success-msg {
+    .success {
       background: #f0fdf4;
       color: #166534;
     }
@@ -246,14 +291,40 @@
       display: none !important;
     }
 
+    .robot {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .robot-box {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .robot-box.checked {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: white;
+    }
+
     .spinner {
       display: inline-block;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border: 2px solid rgba(255,255,255,0.3);
       border-radius: 50%;
       border-top-color: white;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.7s linear infinite;
       margin-right: 8px;
       vertical-align: middle;
     }
@@ -262,174 +333,442 @@
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 480px) {
-      .trust-section, .auth-card {
-        padding: 24px 20px;
+    /* ===== FEATURES ROW ===== */
+    .features {
+      background: white;
+      padding: 40px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .features .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+
+    .feature-item {
+      padding: 10px;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      background: #fdf2f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 22px;
+      color: #8B0000;
+    }
+
+    .feature-item h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .feature-item p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* ===== PRODUCTS ===== */
+    .products {
+      padding: 60px 0;
+      background: #fafafa;
+    }
+
+    .products .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+      font-size: 28px;
+    }
+
+    .section-header a {
+      color: #8B0000;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .product-img {
+      height: 140px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .product-body {
+      padding: 18px;
+    }
+
+    .product-body h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .product-body p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .product-body a {
+      color: #8B0000;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #1a1a1a;
+      color: #ccc;
+      padding: 40px 0 20px;
+      font-size: 14px;
+    }
+
+    footer .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .features .container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .features .container {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- TRUST SECTION -->
-    <div class="trust-section">
-      <div class="logo">
-        <span>🔒</span>
-        SecureTrade Capital
-      </div>
-      <h1 class="trust-title">Your Trusted Investment Partner</h1>
-      <p class="trust-text">
-        We are a fully regulated and highly secure investment platform dedicated to helping everyday people grow their wealth safely. 
-        Your funds are protected with bank-level encryption, real-time monitoring, and strict risk management. 
-        Thousands of investors already trust us with their capital because we put security, transparency, and reliability first.
-      </p>
-      <div class="trust-badges">
-        <div class="badge">🛡️ Bank-Level Security</div>
-        <div class="badge">✅ Fully Regulated</div>
-        <div class="badge">📈 Proven Track Record</div>
-        <div class="badge">💬 24/7 Support</div>
-      </div>
-    </div>
-
-    <!-- AUTH CARD -->
-    <div class="auth-card">
-      <div id="errorMsg" class="error-msg"></div>
-      <div id="successMsg" class="success-msg"></div>
-
-      <!-- LOGIN -->
-      <div id="loginView">
-        <h2 class="auth-title">Log On to Your Account</h2>
-        <p class="auth-subtitle">Welcome back. Please enter your details.</p>
-
-        <form id="loginForm">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email" />
-          </div>
-
-          <div class="form-group">
-            <label>Password</label>
-            <div class="password-wrapper">
-              <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password" />
-              <span class="toggle-password" onclick="togglePassword('loginPassword', this)">👁️</span>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="loginBtn">Log On</button>
-        </form>
-
-        <div class="switch-link">
-          Doesn’t have an account? <a onclick="showSignup()">Sign up</a>
-        </div>
-      </div>
-
-      <!-- SIGNUP -->
-      <div id="signupView" class="hidden">
-        <h2 class="auth-title">Create Your Account</h2>
-        <p class="auth-subtitle">Join thousands of smart investors today.</p>
-
-        <form id="signupForm">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="signupFullName" placeholder="John Doe" required />
-          </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="signupEmail" placeholder="you@example.com" required />
-          </div>
-
-          <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" id="signupPhone" placeholder="+1 234 567 8900" required />
-          </div>
-
-          <div class="form-group">
-            <label>Country</label>
-            <select id="signupCountry" required>
-              <option value="">Select your country</option>
-              <option value="United States">United States</option>
-              <option value="Canada">Canada</option>
-              <option value="United Kingdom">United Kingdom</option>
-              <option value="Nigeria">Nigeria</option>
-              <option value="Ghana">Ghana</option>
-              <option value="South Africa">South Africa</option>
-              <option value="Kenya">Kenya</option>
-              <option value="India">India</option>
-              <option value="Australia">Australia</option>
-              <option value="Germany">Germany</option>
-              <option value="France">France</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Referral Code (Optional)</label>
-            <input type="text" id="signupReferral" placeholder="Enter referral code if any" />
-          </div>
-
-          <div class="form-group">
-            <label>Password</label>
-            <div class="password-wrapper">
-              <input type="password" id="signupPassword" placeholder="Create a strong password" required minlength="6" />
-              <span class="toggle-password" onclick="togglePassword('signupPassword', this)">👁️</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Reconfirm Password</label>
-            <div class="password-wrapper">
-              <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required />
-              <span class="toggle-password" onclick="togglePassword('signupConfirmPassword', this)">👁️</span>
-            </div>
-          </div>
-
-          <div class="robot-check" onclick="toggleRobot()">
-            <div class="robot-box" id="robotBox"></div>
-            <span>I’m not a robot</span>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="signupBtn">Create Account</button>
-        </form>
-
-        <div class="switch-link">
-          Already have an account? <a onclick="showLogin()">Log On</a>
-        </div>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div>SecureTrade Capital – Trusted Investment Platform</div>
+      <div class="top-links">
+        <a href="#">Support</a>
+        <a href="#">Locations</a>
+        <a href="#">Contact</a>
       </div>
     </div>
   </div>
 
+  <!-- MAIN HEADER -->
+  <header class="main-header">
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        SecureTrade
+      </div>
+
+      <nav class="nav">
+        <a href="#">Investing</a>
+        <a href="#">Stocks</a>
+        <a href="#">Retirement</a>
+        <a href="#">Learning</a>
+        <a href="#">About</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="#" class="btn-outline" onclick="showSignup(); return false;">Sign Up</a>
+        <a href="#" class="btn-primary" onclick="showLogin(); return false;">Log On</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Your goals.<br>Our support.</h1>
+        <p>
+          Whether you're building your portfolio, investing in Apple and top stocks, 
+          or planning for the future — SecureTrade is here to help you grow your wealth with confidence.
+        </p>
+        <a href="#" class="hero-btn" onclick="showSignup(); return false;">Start Investing Today →</a>
+      </div>
+
+      <!-- LOGIN / SIGNUP CARD -->
+      <div class="login-card">
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
+
+        <!-- LOGIN VIEW -->
+        <div id="loginView">
+          <h2>Log On to Your Accounts</h2>
+          <p class="subtitle">Welcome back. Please enter your details.</p>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="loginEmail" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div class="password-wrap">
+                <input type="password" id="loginPassword" placeholder="Enter password" required />
+                <span class="toggle-pass" onclick="togglePass('loginPassword', this)">👁️</span>
+              </div>
+            </div>
+            <button type="submit" class="btn-login" id="loginBtn">Log On</button>
+          </form>
+
+          <div class="links">
+            <a onclick="showSignup()">Don’t have an account? Sign up</a>
+          </div>
+        </div>
+
+        <!-- SIGNUP VIEW -->
+        <div id="signupView" class="hidden">
+          <h2>Create Your Account</h2>
+          <p class="subtitle">Join thousands of smart investors.</p>
+
+          <form id="signupForm">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="signupFullName" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="signupEmail" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="signupPhone" placeholder="+1 234 567 8900" required />
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <select id="signupCountry" required>
+                <option value="">Select country</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+                <option>Nigeria</option>
+                <option>Ghana</option>
+                <option>South Africa</option>
+                <option>Kenya</option>
+                <option>India</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Referral Code (Optional)</label>
+              <input type="text" id="signupReferral" placeholder="Enter code if any" />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div class="password-wrap">
+                <input type="password" id="signupPassword" placeholder="Create password" required minlength="6" />
+                <span class="toggle-pass" onclick="togglePass('signupPassword', this)">👁️</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <div class="password-wrap">
+                <input type="password" id="signupConfirm" placeholder="Confirm password" required />
+                <span class="toggle-pass" onclick="togglePass('signupConfirm', this)">👁️</span>
+              </div>
+            </div>
+
+            <div class="robot" onclick="toggleRobot()">
+              <div class="robot-box" id="robotBox"></div>
+              <span>I’m not a robot</span>
+            </div>
+
+            <button type="submit" class="btn-login" id="signupBtn">Create Account</button>
+          </form>
+
+          <div class="links">
+            <a onclick="showLogin()">Already have an account? Log On</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <div class="feature-item">
+        <div class="feature-icon">📈</div>
+        <h4>Stock Investing</h4>
+        <p>Buy top stocks like Apple, Tesla & more</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🛡️</div>
+        <h4>Bank-Level Security</h4>
+        <p>Your funds are fully protected</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💰</div>
+        <h4>High Returns</h4>
+        <p>Grow your money with confidence</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📱</div>
+        <h4>Easy to Use</h4>
+        <p>Invest from anywhere, anytime</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <h4>24/7 Support</h4>
+        <p>Real humans ready to help you</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured Products & Services</h2>
+        <a href="#">See all →</a>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-img">📱</div>
+          <div class="product-body">
+            <h3>Mobile Investing</h3>
+            <p>Trade stocks on the go with our powerful app.</p>
+            <a href="#">Learn more →</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">🍎</div>
+          <div class="product-body">
+            <h3>Apple Stock Focus</h3>
+            <p>Special packages designed around AAPL growth.</p>
+            <a href="#">Explore →</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">💳</div>
+          <div class="product-body">
+            <h3>Flexible Packages</h3>
+            <p>Start from $100 and earn attractive returns.</p>
+            <a href="#">View packages →</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">🎯</div>
+          <div class="product-body">
+            <h3>Retirement Planning</h3>
+            <p>Build long-term wealth with disciplined investing.</p>
+            <a href="#">Learn more →</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">🏢</div>
+          <div class="product-body">
+            <h3>Business Accounts</h3>
+            <p>Tools and support for growing companies.</p>
+            <a href="#">Learn more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2026 SecureTrade Capital. All rights reserved. Investing involves risk.</p>
+    </div>
+  </footer>
+
   <script>
-    // ===================== SUPABASE CONFIG =====================
+    // ===================== SUPABASE =====================
     const SUPABASE_URL = 'https://jvvlfisxnliloknnjwmg.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_K66Z5MCL_GZvxdBGcwsXvQ_tTcxKxzm';
-
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ===================== UI HELPERS =====================
     let isRobotChecked = false;
 
+    // ===================== UI =====================
     function showLogin() {
       document.getElementById('loginView').classList.remove('hidden');
       document.getElementById('signupView').classList.add('hidden');
       clearMessages();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showSignup() {
       document.getElementById('loginView').classList.add('hidden');
       document.getElementById('signupView').classList.remove('hidden');
       clearMessages();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function togglePassword(inputId, icon) {
-      const input = document.getElementById(inputId);
+    function togglePass(id, el) {
+      const input = document.getElementById(id);
       if (input.type === 'password') {
         input.type = 'text';
-        icon.textContent = '🙈';
+        el.textContent = '🙈';
       } else {
         input.type = 'password';
-        icon.textContent = '👁️';
+        el.textContent = '👁️';
       }
     }
 
@@ -464,9 +803,9 @@
       document.getElementById('successMsg').style.display = 'none';
     }
 
-    function setLoading(btnId, isLoading, text) {
+    function setLoading(btnId, loading, text) {
       const btn = document.getElementById(btnId);
-      if (isLoading) {
+      if (loading) {
         btn.disabled = true;
         btn.innerHTML = `<span class="spinner"></span>${text}`;
       } else {
@@ -483,27 +822,15 @@
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
 
-      if (!email || !password) {
-        showError('Please fill in all fields.');
-        return;
-      }
-
       setLoading('loginBtn', true, 'Logging in...');
 
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        // Success → go to dashboard
         window.location.href = 'dashboard.html';
-
       } catch (err) {
-        console.error(err);
-        showError(err.message || 'Login failed. Please check your email and password.');
+        showError(err.message || 'Login failed. Check your email and password.');
         setLoading('loginBtn', false, 'Log On');
       }
     });
@@ -517,15 +844,14 @@
       const email = document.getElementById('signupEmail').value.trim();
       const phone = document.getElementById('signupPhone').value.trim();
       const country = document.getElementById('signupCountry').value;
-      const referralCode = document.getElementById('signupReferral').value.trim().toUpperCase();
+      const referral = document.getElementById('signupReferral').value.trim().toUpperCase();
       const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
 
-      if (password !== confirmPassword) {
+      if (password !== confirm) {
         showError('Passwords do not match.');
         return;
       }
-
       if (!isRobotChecked) {
         showError('Please confirm you are not a robot.');
         return;
@@ -534,100 +860,71 @@
       setLoading('signupBtn', true, 'Creating account...');
 
       try {
-        // 1. Create the user in Auth
         const { data: authData, error: authError } = await supabase.auth.signUp({
-          email: email,
-          password: password,
-          options: {
-            data: {
-              full_name: fullName
-            }
-          }
+          email,
+          password,
+          options: { data: { full_name: fullName } }
         });
 
         if (authError) throw authError;
-        if (!authData.user) throw new Error('Account creation failed. Please try again.');
+        if (!authData.user) throw new Error('Account creation failed');
 
         const userId = authData.user.id;
 
-        // 2. Wait a short moment for the database trigger to create the profile
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        // Wait for trigger to create profile
+        await new Promise(r => setTimeout(r, 1500));
 
-        // 3. Update the profile with extra information
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({
-            full_name: fullName,
-            phone: phone,
-            country: country
-          })
-          .eq('id', userId);
+        // Update profile
+        await supabase.from('profiles').update({
+          full_name: fullName,
+          phone: phone,
+          country: country
+        }).eq('id', userId);
 
-        // We don't throw if profile update fails (trigger may still be running)
-        if (profileError) {
-          console.warn('Profile update warning:', profileError.message);
-        }
-
-        // 4. Handle referral code if provided
-        if (referralCode) {
-          const { data: referrer } = await supabase
+        // Referral
+        if (referral) {
+          const { data: ref } = await supabase
             .from('profiles')
             .select('id')
-            .eq('referral_code', referralCode)
+            .eq('referral_code', referral)
             .maybeSingle();
 
-          if (referrer) {
-            await supabase
-              .from('profiles')
-              .update({ referred_by: referrer.id })
-              .eq('id', userId);
-
-            await supabase
-              .from('referrals')
-              .insert({
-                referrer_id: referrer.id,
-                referred_id: userId
-              });
+          if (ref) {
+            await supabase.from('profiles').update({ referred_by: ref.id }).eq('id', userId);
+            await supabase.from('referrals').insert({
+              referrer_id: ref.id,
+              referred_id: userId
+            });
           }
         }
 
-        // 5. Give $50 signup bonus
-        await supabase
-          .from('profiles')
-          .update({
-            total_balance: 50.00,
-            signup_bonus_claimed: true
-          })
-          .eq('id', userId);
+        // $50 bonus
+        await supabase.from('profiles').update({
+          total_balance: 50.00,
+          signup_bonus_claimed: true
+        }).eq('id', userId);
 
-        // 6. Record the transaction
-        await supabase
-          .from('transactions')
-          .insert({
-            user_id: userId,
-            type: 'signup_bonus',
-            amount: 50.00,
-            description: 'Welcome bonus for creating an account'
-          });
+        await supabase.from('transactions').insert({
+          user_id: userId,
+          type: 'signup_bonus',
+          amount: 50.00,
+          description: 'Welcome bonus'
+        });
 
-        // 7. Create welcome notification
-        await supabase
-          .from('notifications')
-          .insert({
-            user_id: userId,
-            title: 'Welcome Bonus Received! 🎉',
-            message: 'You have received a $50 signup reward. Check your Rewards section.',
-            type: 'success'
-          });
+        await supabase.from('notifications').insert({
+          user_id: userId,
+          title: 'Welcome Bonus Received! 🎉',
+          message: 'You received $50 for signing up. Check Rewards.',
+          type: 'success'
+        });
 
         showSuccess('Account created successfully! You can now log in.');
-
-        // Switch back to login after 2 seconds
+        
         setTimeout(() => {
           showLogin();
           document.getElementById('loginEmail').value = email;
           setLoading('signupBtn', false, 'Create Account');
-        }, 2000);
+        }, 2200);
 
       } catch (err) {
         console.error(err);
@@ -636,15 +933,11 @@
       }
     });
 
-    // ===================== CHECK IF ALREADY LOGGED IN =====================
-    (async function checkSession() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          window.location.href = 'dashboard.html';
-        }
-      } catch (err) {
-        console.log('Session check skipped');
+    // Auto redirect if already logged in
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = 'dashboard.html';
       }
     })();
   </script>
